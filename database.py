@@ -48,3 +48,25 @@ def login_db(email, password):
     else:
         return {"msg" : "Email ou senha incorretos"}
 
+def delete_user(email, password):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            DELETE FROM users
+                   WHERE email = ? AND password = ?
+                   """, (email, password))
+    conn.commit()
+    conn.close()
+    return {"msg" : "Usuário deletado!"}
+
+def show_all():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT * FROM users""")
+    user = cursor.fetchall()
+    
+    conn.close()
+    return(user)
